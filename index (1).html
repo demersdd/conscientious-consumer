@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conscientious Consumer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg: #f5f0e8;
+--surface: #ede7d9;
+--surface2: #e4ddd0;
+--border: #d0c8b8;
+--text: #1c1f1a;
+--text-dim: #5a6055;
+--text-muted: #9a9a8e;
+--green: #2d6142;
+--green-bright: #3d7a55;
+--yellow: #a07c28;
+--orange: #b05a28;
+--red: #9e3030;
+--accent: #2d6142;
+--accent-glow: rgba(45, 97, 66, 0.10);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+background: var(--bg);
+color: var(--text);
+font-family: 'DM Sans', sans-serif;
+font-size: 15px;
+line-height: 1.6;
+overflow-x: hidden;
+}
+
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+pointer-events: none;
+z-index: 9999;
+opacity: 0.4;
+}
+
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 18px 48px;
+background: rgba(245, 240, 232, 0.92);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+font-family: 'Playfair Display', serif;
+font-size: 20px;
+font-weight: 900;
+letter-spacing: -0.5px;
+color: var(--text);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.nav-logo .balance-mark {
+width: 30px; height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+.nav-links {
+display: flex;
+gap: 36px;
+list-style: none;
+}
+
+.nav-links a {
+color: var(--text-dim);
+text-decoration: none;
+font-size: 13px;
+font-weight: 500;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+background: var(--green);
+color: #f5f0e8;
+border: none;
+padding: 9px 22px;
+border-radius: 4px;
+font-family: 'DM Sans', sans-serif;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+letter-spacing: 0.3px;
+transition: background 0.2s, transform 0.15s;
+}
+
+.nav-cta:hover { background: var(--green-bright); transform: translateY(-1px); }
+
+.hero {
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+padding: 120px 48px 80px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-bg-rings {
+position: absolute;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+width: 900px; height: 900px;
+pointer-events: none;
+}
+
+.ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+animation: ring-pulse 8s ease-in-out infinite;
+}
+
+.ring:nth-child(1) { width: 300px; height: 300px; border-color: rgba(45,97,66,0.12); animation-delay: 0s; }
+.ring:nth-child(2) { width: 500px; height: 500px; border-color: rgba(45,97,66,0.07); animation-delay: 1s; }
+.ring:nth-child(3) { width: 700px; height: 700px; border-color: rgba(45,97,66,0.04); animation-delay: 2s; }
+.ring:nth-child(4) { width: 900px; height: 900px; border-color: rgba(45,97,66,0.02); animation-delay: 3s; }
+
+@keyframes ring-pulse {
+0%, 100% { opacity: 0.5; }
+50% { opacity: 1; }
+}
+
+.hero-eyebrow {
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--green);
+margin-bottom: 24px;
+opacity: 0;
+animation: fade-up 0.8s ease forwards 0.2s;
+}
+
+.hero-title {
+font-family: 'Playfair Display', serif;
+font-size: clamp(52px, 8vw, 100px);
+font-weight: 900;
+line-height: 0.95;
+letter-spacing: -3px;
+margin-bottom: 28px;
+opacity: 0;
+animation: fade-up 0.8s ease forwards 0.4s;
+}
+
+.hero-title .line2 {
+color: transparent;
+-webkit-text-stroke: 1px rgba(45, 97, 66, 0.4);
+}
+
+.hero-title .accent-word {
+color: var(--green);
+font-style: italic;
+}
+
+.hero-subtitle {
+font-size: 17px;
+color: var(--text-dim);
+max-width: 520px;
+line-height: 1.7;
+margin-bottom: 48px;
+opacity: 0;
+animation: fade-up 0.8s ease forwards 0.6s;
+}
+
+.hero-actions {
+display: flex;
+gap: 16px;
+align-items: center;
+opacity: 0;
+animation: fade-up 0.8s ease forwards 0.8s;
+}
+
+.btn-primary {
+background: var(--green);
+color: #f5f0e8;
+border: none;
+padding: 14px 32px;
+border-radius: 4px;
+font-family: 'DM Sans', sans-serif;
+font-size: 15px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.btn-primary:hover { background: var(--green-bright); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45,97,66,0.25); }
+
+.btn-ghost {
+background: transparent;
+color: var(--text-dim);
+border: 1px solid var(--border);
+padding: 14px 32px;
+border-radius: 4px;
+font-family: 'DM Sans', sans-serif;
+font-size: 15px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.btn-ghost:hover { border-color: var(--text-dim); color: var(--text); }
+
+.scroll-hint {
+position: absolute;
+bottom: 40px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+color: var(--text-muted);
+font-size: 11px;
+letter-spacing: 2px;
+text-transform: uppercase;
+font-family: 'DM Mono', monospace;
+animation: fade-up 1s ease forwards 1.2s, bounce 2s ease-in-out 2s infinite;
+opacity: 0;
+}
+
+.scroll-line {
+width: 1px; height: 40px;
+background: linear-gradient(to bottom, transparent, var(--green));
+animation: line-grow 1.5s ease infinite;
+}
+
+@keyframes bounce {
+0%, 100% { transform: translateX(-50%) translateY(0); }
+50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@keyframes line-grow {
+0% { opacity: 0; height: 0; }
+50% { opacity: 1; height: 40px; }
+100% { opacity: 0; height: 40px; }
+}
+
+.stats-bar {
+background: var(--surface);
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+padding: 32px 48px;
+display: flex;
+justify-content: center;
+gap: 80px;
+}
+
+.stat-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+}
+
+.stat-number {
+font-family: 'Playfair Display', serif;
+font-size: 36px;
+font-weight: 700;
+color: var(--green);
+}
+
+.stat-label {
+font-size: 12px;
+color: var(--text-muted);
+letter-spacing: 1px;
+text-transform: uppercase;
+font-family: 'DM Mono', monospace;
+}
+
+.section {
+padding: 100px 48px;
+max-width: 1400px;
+margin: 0 auto;
+}
+
+.section-header {
+display: flex;
+align-items: flex-end;
+justify-content: space-between;
+margin-bottom: 56px;
+}
+
+.section-label {
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--green);
+margin-bottom: 12px;
+}
+
+.section-title {
+font-family: 'Playfair Display', serif;
+font-size: clamp(32px, 4vw, 52px);
+font-weight: 700;
+letter-spacing: -1.5px;
+line-height: 1.05;
+}
+
+.section-link {
+color: var(--text-dim);
+text-decoration: none;
+font-size: 13px;
+font-weight: 500;
+letter-spacing: 0.5px;
+display: flex;
+align-items: center;
+gap: 6px;
+transition: color 0.2s;
+}
+
+.section-link:hover { color: var(--green); }
+
+.category-tabs {
+display: flex;
+gap: 8px;
+margin-bottom: 40px;
+flex-wrap: wrap;
+}
+
+.tab {
+padding: 8px 20px;
+border-radius: 100px;
+border: 1px solid var(--border);
+background: transparent;
+color: var(--text-dim);
+font-family: 'DM Sans', sans-serif;
+font-size: 13px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.tab.active, .tab:hover {
+background: var(--surface2);
+border-color: var(--green);
+color: var(--green);
+}
+
+.companies-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 2px;
+background: var(--border);
+border: 1px solid var(--border);
+border-radius: 12px;
+overflow: hidden;
+}
+
+.company-card {
+background: var(--surface);
+padding: 28px;
+transition: background 0.2s;
+cursor: pointer;
+position: relative;
+}
+
+.company-card:hover { background: var(--surface2); }
+
+.company-card::after {
+content: '';
+position: absolute;
+inset: 0;
+opacity: 0;
+background: linear-gradient(135deg, var(--accent-glow), transparent);
+transition: opacity 0.3s;
+pointer-events: none;
+}
+
+.company-card:hover::after { opacity: 1; }
+
+.card-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 20px;
+}
+
+.company-name {
+font-family: 'Playfair Display', serif;
+font-size: 22px;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
+
+.company-category {
+font-size: 11px;
+color: var(--text-muted);
+font-family: 'DM Mono', monospace;
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-top: 4px;
+}
+
+.overall-score {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 2px;
+}
+
+.score-circle {
+width: 52px; height: 52px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Playfair Display', serif;
+font-size: 20px;
+font-weight: 700;
+border: 2px solid;
+position: relative;
+overflow: hidden;
+}
+
+.score-circle.grade-a { border-color: var(--green); color: var(--green); background: rgba(45,97,66,0.07); }
+.score-circle.grade-b { border-color: var(--yellow); color: var(--yellow); background: rgba(160,124,40,0.07); }
+.score-circle.grade-c { border-color: var(--orange); color: var(--orange); background: rgba(176,90,40,0.07); }
+.score-circle.grade-d { border-color: var(--red); color: var(--red); background: rgba(158,48,48,0.07); }
+
+.score-label {
+font-size: 10px;
+color: var(--text-muted);
+font-family: 'DM Mono', monospace;
+letter-spacing: 0.5px;
+}
+
+.metrics {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.metric-row {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.metric-name {
+font-size: 12px;
+color: var(--text-dim);
+width: 130px;
+flex-shrink: 0;
+font-weight: 500;
+}
+
+.metric-bar-bg {
+flex: 1;
+height: 4px;
+background: var(--border);
+border-radius: 2px;
+overflow: hidden;
+}
+
+.metric-bar-fill {
+height: 100%;
+border-radius: 2px;
+transition: width 1s ease;
+}
+
+.metric-score {
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+color: var(--text-muted);
+width: 28px;
+text-align: right;
+}
+
+.fill-green { background: var(--green); }
+.fill-yellow { background: var(--yellow); }
+.fill-orange { background: var(--orange); }
+.fill-red { background: var(--red); }
+
+.card-footer {
+margin-top: 20px;
+padding-top: 16px;
+border-top: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.card-tags {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+}
+
+.tag {
+font-size: 10px;
+padding: 3px 9px;
+border-radius: 100px;
+font-family: 'DM Mono', monospace;
+letter-spacing: 0.3px;
+}
+
+.tag-pos { background: rgba(45,97,66,0.10); color: var(--green); border: 1px solid rgba(45,97,66,0.2); }
+.tag-neg { background: rgba(158,48,48,0.10); color: var(--red); border: 1px solid rgba(158,48,48,0.2); }
+.tag-neu { background: rgba(160,124,40,0.10); color: var(--yellow); border: 1px solid rgba(160,124,40,0.2); }
+
+.compare-btn {
+font-size: 12px;
+color: var(--text-muted);
+background: none;
+border: 1px solid var(--border);
+padding: 6px 14px;
+border-radius: 4px;
+cursor: pointer;
+font-family: 'DM Sans', sans-serif;
+transition: all 0.2s;
+}
+
+.compare-btn:hover { border-color: var(--green); color: var(--green); }
+
+.compare-section {
+background: var(--surface);
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+padding: 80px 48px;
+}
+
+.compare-wrapper {
+max-width: 1400px;
+margin: 0 auto;
+}
+
+.compare-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 48px;
+}
+
+.compare-table th {
+padding: 16px 20px;
+text-align: left;
+font-family: 'DM Mono', monospace;
+font-size: 10px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--text-muted);
+border-bottom: 1px solid var(--border);
+}
+
+.compare-table td {
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+font-size: 13px;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface2); }
+
+.rank-num {
+font-family: 'Playfair Display', serif;
+font-size: 22px;
+font-weight: 700;
+color: var(--text-muted);
+}
+
+.co-name-cell {
+font-weight: 600;
+font-size: 15px;
+}
+
+.pill-score {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 36px; height: 24px;
+border-radius: 100px;
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+font-weight: 500;
+}
+
+.pill-green { background: rgba(45,97,66,0.12); color: var(--green); }
+.pill-yellow { background: rgba(160,124,40,0.12); color: var(--yellow); }
+.pill-orange { background: rgba(176,90,40,0.12); color: var(--orange); }
+.pill-red { background: rgba(158,48,48,0.12); color: var(--red); }
+
+.how-it-works {
+padding: 100px 48px;
+max-width: 1400px;
+margin: 0 auto;
+}
+
+.steps-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2px;
+margin-top: 56px;
+background: var(--border);
+border: 1px solid var(--border);
+border-radius: 12px;
+overflow: hidden;
+}
+
+.step-card {
+background: var(--surface);
+padding: 40px 36px;
+}
+
+.step-num {
+font-family: 'Playfair Display', serif;
+font-size: 72px;
+font-weight: 900;
+color: var(--surface2);
+line-height: 1;
+margin-bottom: 24px;
+letter-spacing: -3px;
+}
+
+.step-icon {
+width: 44px; height: 44px;
+background: var(--accent-glow);
+border: 1px solid rgba(125,184,122,0.2);
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 20px;
+margin-bottom: 20px;
+}
+
+.step-title {
+font-family: 'Playfair Display', serif;
+font-size: 22px;
+font-weight: 700;
+margin-bottom: 12px;
+letter-spacing: -0.5px;
+}
+
+.step-desc {
+color: var(--text-dim);
+font-size: 14px;
+line-height: 1.7;
+}
+
+.criteria-section {
+background: var(--surface);
+border-top: 1px solid var(--border);
+padding: 100px 48px;
+}
+
+.criteria-wrapper { max-width: 1400px; margin: 0 auto; }
+
+.criteria-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 2px;
+margin-top: 56px;
+background: var(--border);
+border: 1px solid var(--border);
+border-radius: 12px;
+overflow: hidden;
+}
+
+.criteria-card {
+background: var(--surface);
+padding: 32px 28px;
+transition: background 0.2s;
+}
+
+.criteria-card:hover { background: var(--surface2); }
+
+.criteria-icon {
+font-size: 28px;
+margin-bottom: 16px;
+}
+
+.criteria-title {
+font-family: 'Playfair Display', serif;
+font-size: 18px;
+font-weight: 700;
+margin-bottom: 10px;
+letter-spacing: -0.3px;
+}
+
+.criteria-desc {
+color: var(--text-dim);
+font-size: 13px;
+line-height: 1.65;
+}
+
+.criteria-weight {
+margin-top: 16px;
+font-family: 'DM Mono', monospace;
+font-size: 11px;
+color: var(--green);
+letter-spacing: 1px;
+}
+
+.manifesto {
+padding: 120px 48px;
+max-width: 900px;
+margin: 0 auto;
+text-align: center;
+}
+
+.manifesto-quote {
+font-family: 'Playfair Display', serif;
+font-size: clamp(28px, 3.5vw, 44px);
+font-weight: 700;
+line-height: 1.25;
+letter-spacing: -1.5px;
+color: var(--text);
+margin-bottom: 32px;
+}
+
+.manifesto-quote em {
+color: var(--green);
+font-style: italic;
+}
+
+.manifesto-body {
+color: var(--text-dim);
+font-size: 16px;
+line-height: 1.8;
+max-width: 640px;
+margin: 0 auto 48px;
+}
+
+.cta-section {
+background: var(--surface);
+border-top: 1px solid var(--border);
+padding: 100px 48px;
+text-align: center;
+}
+
+.cta-title {
+font-family: 'Playfair Display', serif;
+font-size: clamp(36px, 5vw, 64px);
+font-weight: 900;
+letter-spacing: -2px;
+margin-bottom: 20px;
+}
+
+.cta-subtitle {
+color: var(--text-dim);
+font-size: 16px;
+margin-bottom: 40px;
+}
+
+.email-form {
+display: flex;
+gap: 12px;
+max-width: 440px;
+margin: 0 auto;
+}
+
+.email-input {
+flex: 1;
+background: var(--surface2);
+border: 1px solid var(--border);
+color: var(--text);
+padding: 13px 18px;
+border-radius: 4px;
+font-family: 'DM Sans', sans-serif;
+font-size: 14px;
+outline: none;
+transition: border-color 0.2s;
+}
+
+.email-input:focus { border-color: var(--green); }
+.email-input::placeholder { color: var(--text-muted); }
+
+footer {
+background: var(--bg);
+border-top: 1px solid var(--border);
+padding: 48px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.footer-logo {
+font-family: 'Playfair Display', serif;
+font-size: 18px;
+font-weight: 700;
+}
+
+.footer-text {
+font-size: 13px;
+color: var(--text-muted);
+font-family: 'DM Mono', monospace;
+}
+
+.footer-links {
+display: flex;
+gap: 28px;
+list-style: none;
+}
+
+.footer-links a {
+color: var(--text-muted);
+text-decoration: none;
+font-size: 13px;
+transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+@keyframes fade-up {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.ticker {
+background: var(--surface);
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+padding: 12px 0;
+overflow: hidden;
+white-space: nowrap;
+}
+
+.ticker-inner {
+display: inline-flex;
+gap: 80px;
+animation: ticker 30s linear infinite;
+}
+
+.ticker-item {
+font-family: 'DM Mono', monospace;
+font-size: 12px;
+color: var(--text-dim);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.ticker-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: var(--green); }
+.dot-red { background: var(--red); }
+.dot-yellow { background: var(--yellow); }
+
+@keyframes ticker {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+
+@media (max-width: 900px) {
+nav { padding: 16px 24px; }
+.nav-links { display: none; }
+.hero { padding: 100px 24px 60px; }
+.section { padding: 60px 24px; }
+.stats-bar { gap: 40px; flex-wrap: wrap; padding: 24px; }
+.companies-grid { grid-template-columns: 1fr; }
+.steps-grid { grid-template-columns: 1fr; }
+.criteria-grid { grid-template-columns: repeat(2, 1fr); }
+.compare-section { padding: 60px 24px; }
+.how-it-works { padding: 60px 24px; }
+footer { flex-direction: column; gap: 20px; text-align: center; }
+.footer-links { flex-wrap: wrap; justify-content: center; }
+.email-form { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="balance-mark">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="13" y1="5" x2="13" y2="22" stroke="#2d6142" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="10" y1="22" x2="16" y2="22" stroke="#2d6142" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="5" y1="9.4" x2="21" y2="8.6" stroke="#2d6142" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M5 9.4 C4 12.5 6 14.5 8 12.5 C10 10.5 9 9.4 5 9.4Z" stroke="#2d6142" stroke-width="1.1" fill="none" stroke-linejoin="round"/>
+        <path d="M21 8.6 C20 11.7 22 13.7 24 11.7 C26 9.7 25 8.6 21 8.6Z" stroke="#2d6142" stroke-width="1.1" fill="none" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    Conscientious Consumer
+  </div>
+  <ul class="nav-links">
+    <li><a href="#compare">Compare</a></li>
+    <li><a href="#criteria">Our Criteria</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="nav-cta">Get the App</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <p class="hero-eyebrow">✦ Your money is your vote</p>
+  <h1 class="hero-title">
+    Spend with<br>
+    <span class="accent-word">conscience.</span><br>
+    <span class="line2">Demand better.</span>
+  </h1>
+  <p class="hero-subtitle">We score the world's biggest brands on ethics, sustainability, worker rights, and more — so you can spend your money where it truly matters.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('compare').scrollIntoView({behavior:'smooth'})">Explore Companies →</button>
+    <button class="btn-ghost" onclick="document.getElementById('criteria').scrollIntoView({behavior:'smooth'})">How We Score</button>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>Patagonia scores 91/100 in Supply Chain Ethics</span>
+    <span class="ticker-item"><span class="ticker-dot dot-red"></span>Amazon scores 34/100 in Worker Wellbeing</span>
+    <span class="ticker-item"><span class="ticker-dot dot-yellow"></span>Starbucks scores 61/100 in Sustainability</span>
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>Costco scores 82/100 in Employee Experience</span>
+    <span class="ticker-item"><span class="ticker-dot dot-red"></span>McDonald's scores 28/100 in Supply Chain Ethics</span>
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>REI scores 88/100 in D&amp;I</span>
+    <span class="ticker-item"><span class="ticker-dot dot-yellow"></span>Walmart scores 44/100 in Value vs Ethics</span>
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>Patagonia scores 91/100 in Supply Chain Ethics</span>
+    <span class="ticker-item"><span class="ticker-dot dot-red"></span>Amazon scores 34/100 in Worker Wellbeing</span>
+    <span class="ticker-item"><span class="ticker-dot dot-yellow"></span>Starbucks scores 61/100 in Sustainability</span>
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>Costco scores 82/100 in Employee Experience</span>
+    <span class="ticker-item"><span class="ticker-dot dot-red"></span>McDonald's scores 28/100 in Supply Chain Ethics</span>
+    <span class="ticker-item"><span class="ticker-dot dot-green"></span>REI scores 88/100 in D&amp;I</span>
+    <span class="ticker-item"><span class="ticker-dot dot-yellow"></span>Walmart scores 44/100 in Value vs Ethics</span>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-number">2,400+</span>
+    <span class="stat-label">Companies Rated</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">8</span>
+    <span class="stat-label">Ethical Dimensions</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">14</span>
+    <span class="stat-label">Industry Categories</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">320k+</span>
+    <span class="stat-label">Community Members</span>
+  </div>
+</div>
+
+<section class="section" id="compare">
+  <div class="section-header">
+    <div>
+      <p class="section-label">✦ Rankings</p>
+      <h2 class="section-title">Browse by Category</h2>
+    </div>
+    <a href="#" class="section-link">View all companies →</a>
+  </div>
+  <div class="category-tabs">
+    <button class="tab active" onclick="setTab(this, 'coffee')">☕ Coffee</button>
+    <button class="tab" onclick="setTab(this, 'grocery')">🛒 Grocery</button>
+    <button class="tab" onclick="setTab(this, 'fastfood')">🍔 Fast Food</button>
+    <button class="tab" onclick="setTab(this, 'fashion')">👕 Fashion</button>
+    <button class="tab" onclick="setTab(this, 'tech')">💻 Tech</button>
+    <button class="tab" onclick="setTab(this, 'retail')">🏬 Retail</button>
+  </div>
+  <div class="companies-grid" id="companies-grid"></div>
+</section>
+
+<div class="compare-section">
+  <div class="compare-wrapper">
+    <div class="section-header">
+      <div>
+        <p class="section-label">✦ Head to Head</p>
+        <h2 class="section-title">Coffee Chain Rankings</h2>
+      </div>
+    </div>
+    <table class="compare-table" id="compare-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Company</th>
+          <th>Supply Chain</th>
+          <th>Worker Rights</th>
+          <th>Sustainability</th>
+          <th>D&amp;I</th>
+          <th>Politics</th>
+          <th>Value</th>
+          <th>Overall</th>
+        </tr>
+      </thead>
+      <tbody id="compare-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="how-it-works" id="how">
+  <div>
+    <p class="section-label">✦ Process</p>
+    <h2 class="section-title">How We Score</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-icon">🔍</div>
+      <h3 class="step-title">Research &amp; Source</h3>
+      <p class="step-desc">We aggregate data from ESG reports, government filings, investigative journalism, NGO assessments, and academic research across 14 industry verticals.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-icon">⚖️</div>
+      <h3 class="step-title">Score &amp; Weight</h3>
+      <p class="step-desc">Each dimension is scored 0–100, weighted by its ethical impact. Community members vote on weightings yearly — making our methodology democratically accountable.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-icon">📣</div>
+      <h3 class="step-title">Publish &amp; Pressure</h3>
+      <p class="step-desc">Scores are published openly. We send reports directly to company boards, partner with journalists, and run targeted campaigns to create real accountability.</p>
+    </div>
+  </div>
+</div>
+
+<div class="criteria-section" id="criteria">
+  <div class="criteria-wrapper">
+    <div class="section-header">
+      <div>
+        <p class="section-label">✦ Our Framework</p>
+        <h2 class="section-title">What We Measure</h2>
+      </div>
+    </div>
+    <div class="criteria-grid">
+      <div class="criteria-card">
+        <div class="criteria-icon">🌾</div>
+        <h3 class="criteria-title">Supply Chain Ethics</h3>
+        <p class="criteria-desc">Labor practices, child labor risk, fair trade certifications, sourcing transparency, and supplier audits throughout the full production chain.</p>
+        <p class="criteria-weight">WEIGHT: 20%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">👷</div>
+        <h3 class="criteria-title">Worker Wellbeing</h3>
+        <p class="criteria-desc">Living wages, benefits, union rights, safety records, worker satisfaction surveys, CEO pay ratio, and anti-discrimination practices.</p>
+        <p class="criteria-weight">WEIGHT: 18%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">🌍</div>
+        <h3 class="criteria-title">Sustainability</h3>
+        <p class="criteria-desc">Carbon emissions, net-zero commitments, packaging waste, water usage, biodiversity impact, and credibility of environmental pledges.</p>
+        <p class="criteria-weight">WEIGHT: 18%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">🤝</div>
+        <h3 class="criteria-title">Diversity &amp; Inclusion</h3>
+        <p class="criteria-desc">Board and leadership diversity, pay equity audits, LGBTQ+ policies, accessibility, community investment, and inclusive hiring practices.</p>
+        <p class="criteria-weight">WEIGHT: 14%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">🗳️</div>
+        <h3 class="criteria-title">Political Alignment</h3>
+        <p class="criteria-desc">Political donations, lobbying activity, policy advocacy stances, voter suppression risk, and alignment with democratic institutions and human rights.</p>
+        <p class="criteria-weight">WEIGHT: 14%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">💰</div>
+        <h3 class="criteria-title">Value vs. Quality</h3>
+        <p class="criteria-desc">Honest pricing, ingredient/product quality, shrinkflation tracking, hidden fees, and whether cost-cutting comes at customer or worker expense.</p>
+        <p class="criteria-weight">WEIGHT: 10%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">😊</div>
+        <h3 class="criteria-title">Customer Experience</h3>
+        <p class="criteria-desc">Data privacy practices, customer service quality, dark patterns, refund/return policies, and whether customers are treated with dignity.</p>
+        <p class="criteria-weight">WEIGHT: 8%</p>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-icon">🏘️</div>
+        <h3 class="criteria-title">Community Impact</h3>
+        <p class="criteria-desc">Tax practices, local business displacement, community investment, philanthropic track record, and net impact on neighborhoods where they operate.</p>
+        <p class="criteria-weight">WEIGHT: 8%</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="manifesto" id="about">
+  <p class="section-label" style="text-align:center; margin-bottom: 24px;">✦ Our Mission</p>
+  <p class="manifesto-quote">"Every purchase is a ballot. We're here to make sure you know <em>exactly</em> what you're voting for."</p>
+  <p class="manifesto-body">Corporations respond to consumer pressure. When millions of people move their spending toward ethical businesses — and away from harmful ones — change happens. We believe radical transparency is the most powerful tool for building a world-centric economy. No ads, no sponsored scores, no conflicts of interest. Just the truth.</p>
+  <button class="btn-primary">Read Our Full Manifesto →</button>
+</div>
+
+<div class="cta-section">
+  <p class="section-label" style="margin-bottom: 16px;">✦ Join the Movement</p>
+  <h2 class="cta-title">Be a Conscientious<br><span style="color: var(--green)">Consumer.</span></h2>
+  <p class="cta-subtitle">Get weekly ethical scores, alerts when a brand drops or improves, and tools to spend with purpose.</p>
+  <div class="email-form">
+    <input type="email" class="email-input" placeholder="your@email.com">
+    <button class="btn-primary">Join Free</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">🌿 Conscientious Consumer</div>
+  <p class="footer-text">© 2025 · Independent · Non-profit · Ad-free</p>
+  <ul class="footer-links">
+    <li><a href="#">Methodology</a></li>
+    <li><a href="#">Data Sources</a></li>
+    <li><a href="#">Partner NGOs</a></li>
+    <li><a href="#">Press</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+const data = {
+  coffee: [
+    {
+      name: "Patagonia", category: "Coffee / Outdoor", grade: "A", gradeClass: "grade-a",
+      metrics: [
+        { name: "Supply Chain", score: 91, color: "fill-green" },
+        { name: "Worker Rights", score: 86, color: "fill-green" },
+        { name: "Sustainability", score: 93, color: "fill-green" },
+        { name: "D&I", score: 78, color: "fill-green" },
+        { name: "Politics", score: 82, color: "fill-green" },
+        { name: "Value", score: 70, color: "fill-yellow" },
+      ],
+      tags: [{ label: "B Corp", type: "pos" }, { label: "1% For Planet", type: "pos" }],
+    },
+    {
+      name: "Starbucks", category: "Coffee Chain", grade: "C", gradeClass: "grade-c",
+      metrics: [
+        { name: "Supply Chain", score: 58, color: "fill-yellow" },
+        { name: "Worker Rights", score: 41, color: "fill-orange" },
+        { name: "Sustainability", score: 64, color: "fill-yellow" },
+        { name: "D&I", score: 72, color: "fill-green" },
+        { name: "Politics", score: 55, color: "fill-yellow" },
+        { name: "Value", score: 48, color: "fill-orange" },
+      ],
+      tags: [{ label: "Union busting", type: "neg" }, { label: "Fair trade ☕", type: "pos" }],
+    },
+    {
+      name: "Dutch Bros", category: "Coffee Chain", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 63, color: "fill-yellow" },
+        { name: "Worker Rights", score: 74, color: "fill-green" },
+        { name: "Sustainability", score: 55, color: "fill-yellow" },
+        { name: "D&I", score: 68, color: "fill-yellow" },
+        { name: "Politics", score: 60, color: "fill-yellow" },
+        { name: "Value", score: 80, color: "fill-green" },
+      ],
+      tags: [{ label: "Good wages", type: "pos" }, { label: "Plastic cups", type: "neg" }],
+    },
+  ],
+  grocery: [
+    {
+      name: "Whole Foods", category: "Grocery", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 72, color: "fill-green" },
+        { name: "Worker Rights", score: 54, color: "fill-yellow" },
+        { name: "Sustainability", score: 77, color: "fill-green" },
+        { name: "D&I", score: 69, color: "fill-yellow" },
+        { name: "Politics", score: 48, color: "fill-orange" },
+        { name: "Value", score: 42, color: "fill-orange" },
+      ],
+      tags: [{ label: "Amazon owned", type: "neg" }, { label: "Organic focus", type: "pos" }],
+    },
+    {
+      name: "Trader Joe's", category: "Grocery", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 68, color: "fill-yellow" },
+        { name: "Worker Rights", score: 78, color: "fill-green" },
+        { name: "Sustainability", score: 62, color: "fill-yellow" },
+        { name: "D&I", score: 65, color: "fill-yellow" },
+        { name: "Politics", score: 70, color: "fill-green" },
+        { name: "Value", score: 88, color: "fill-green" },
+      ],
+      tags: [{ label: "Good wages", type: "pos" }, { label: "Excess packaging", type: "neg" }],
+    },
+    {
+      name: "Walmart", category: "Grocery", grade: "D", gradeClass: "grade-d",
+      metrics: [
+        { name: "Supply Chain", score: 31, color: "fill-red" },
+        { name: "Worker Rights", score: 28, color: "fill-red" },
+        { name: "Sustainability", score: 44, color: "fill-orange" },
+        { name: "D&I", score: 50, color: "fill-yellow" },
+        { name: "Politics", score: 22, color: "fill-red" },
+        { name: "Value", score: 76, color: "fill-green" },
+      ],
+      tags: [{ label: "Low wages", type: "neg" }, { label: "Anti-union", type: "neg" }],
+    },
+  ],
+  fastfood: [
+    {
+      name: "Chipotle", category: "Fast Casual", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 70, color: "fill-green" },
+        { name: "Worker Rights", score: 62, color: "fill-yellow" },
+        { name: "Sustainability", score: 68, color: "fill-yellow" },
+        { name: "D&I", score: 66, color: "fill-yellow" },
+        { name: "Politics", score: 58, color: "fill-yellow" },
+        { name: "Value", score: 65, color: "fill-yellow" },
+      ],
+      tags: [{ label: "Responsibly sourced", type: "pos" }, { label: "Wage issues", type: "neg" }],
+    },
+    {
+      name: "McDonald's", category: "Fast Food", grade: "D", gradeClass: "grade-d",
+      metrics: [
+        { name: "Supply Chain", score: 28, color: "fill-red" },
+        { name: "Worker Rights", score: 32, color: "fill-red" },
+        { name: "Sustainability", score: 38, color: "fill-red" },
+        { name: "D&I", score: 55, color: "fill-yellow" },
+        { name: "Politics", score: 30, color: "fill-red" },
+        { name: "Value", score: 60, color: "fill-yellow" },
+      ],
+      tags: [{ label: "Deforestation linked", type: "neg" }, { label: "Poverty wages", type: "neg" }],
+    },
+    {
+      name: "In-N-Out", category: "Fast Food", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 66, color: "fill-yellow" },
+        { name: "Worker Rights", score: 80, color: "fill-green" },
+        { name: "Sustainability", score: 50, color: "fill-yellow" },
+        { name: "D&I", score: 56, color: "fill-yellow" },
+        { name: "Politics", score: 40, color: "fill-orange" },
+        { name: "Value", score: 85, color: "fill-green" },
+      ],
+      tags: [{ label: "Good wages", type: "pos" }, { label: "GOP donations", type: "neg" }],
+    },
+  ],
+  fashion: [
+    {
+      name: "Patagonia", category: "Outdoor / Fashion", grade: "A", gradeClass: "grade-a",
+      metrics: [
+        { name: "Supply Chain", score: 91, color: "fill-green" },
+        { name: "Worker Rights", score: 86, color: "fill-green" },
+        { name: "Sustainability", score: 93, color: "fill-green" },
+        { name: "D&I", score: 78, color: "fill-green" },
+        { name: "Politics", score: 82, color: "fill-green" },
+        { name: "Value", score: 70, color: "fill-yellow" },
+      ],
+      tags: [{ label: "B Corp", type: "pos" }, { label: "Repair Program", type: "pos" }],
+    },
+    {
+      name: "H&M", category: "Fast Fashion", grade: "D", gradeClass: "grade-d",
+      metrics: [
+        { name: "Supply Chain", score: 24, color: "fill-red" },
+        { name: "Worker Rights", score: 30, color: "fill-red" },
+        { name: "Sustainability", score: 35, color: "fill-red" },
+        { name: "D&I", score: 52, color: "fill-yellow" },
+        { name: "Politics", score: 45, color: "fill-orange" },
+        { name: "Value", score: 70, color: "fill-yellow" },
+      ],
+      tags: [{ label: "Greenwashing", type: "neg" }, { label: "Sweatshop risk", type: "neg" }],
+    },
+    {
+      name: "Everlane", category: "Fashion", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 71, color: "fill-green" },
+        { name: "Worker Rights", score: 65, color: "fill-yellow" },
+        { name: "Sustainability", score: 69, color: "fill-yellow" },
+        { name: "D&I", score: 60, color: "fill-yellow" },
+        { name: "Politics", score: 64, color: "fill-yellow" },
+        { name: "Value", score: 72, color: "fill-green" },
+      ],
+      tags: [{ label: "Radical transparency", type: "pos" }, { label: "Mixed union record", type: "neu" }],
+    },
+  ],
+  tech: [
+    {
+      name: "Apple", category: "Big Tech", grade: "C", gradeClass: "grade-c",
+      metrics: [
+        { name: "Supply Chain", score: 48, color: "fill-orange" },
+        { name: "Worker Rights", score: 60, color: "fill-yellow" },
+        { name: "Sustainability", score: 72, color: "fill-green" },
+        { name: "D&I", score: 64, color: "fill-yellow" },
+        { name: "Politics", score: 55, color: "fill-yellow" },
+        { name: "Value", score: 44, color: "fill-orange" },
+      ],
+      tags: [{ label: "Foxconn concerns", type: "neg" }, { label: "Carbon neutral pledge", type: "pos" }],
+    },
+    {
+      name: "Amazon", category: "Tech / Retail", grade: "D", gradeClass: "grade-d",
+      metrics: [
+        { name: "Supply Chain", score: 38, color: "fill-red" },
+        { name: "Worker Rights", score: 34, color: "fill-red" },
+        { name: "Sustainability", score: 46, color: "fill-orange" },
+        { name: "D&I", score: 52, color: "fill-yellow" },
+        { name: "Politics", score: 28, color: "fill-red" },
+        { name: "Value", score: 70, color: "fill-yellow" },
+      ],
+      tags: [{ label: "Warehouse conditions", type: "neg" }, { label: "Anti-union", type: "neg" }],
+    },
+    {
+      name: "Microsoft", category: "Big Tech", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 64, color: "fill-yellow" },
+        { name: "Worker Rights", score: 72, color: "fill-green" },
+        { name: "Sustainability", score: 80, color: "fill-green" },
+        { name: "D&I", score: 74, color: "fill-green" },
+        { name: "Politics", score: 60, color: "fill-yellow" },
+        { name: "Value", score: 56, color: "fill-yellow" },
+      ],
+      tags: [{ label: "Carbon negative goal", type: "pos" }, { label: "Water positive", type: "pos" }],
+    },
+  ],
+  retail: [
+    {
+      name: "Costco", category: "Retail", grade: "A", gradeClass: "grade-a",
+      metrics: [
+        { name: "Supply Chain", score: 74, color: "fill-green" },
+        { name: "Worker Rights", score: 88, color: "fill-green" },
+        { name: "Sustainability", score: 66, color: "fill-yellow" },
+        { name: "D&I", score: 72, color: "fill-green" },
+        { name: "Politics", score: 68, color: "fill-yellow" },
+        { name: "Value", score: 92, color: "fill-green" },
+      ],
+      tags: [{ label: "Living wages", type: "pos" }, { label: "Good benefits", type: "pos" }],
+    },
+    {
+      name: "Target", category: "Retail", grade: "B", gradeClass: "grade-b",
+      metrics: [
+        { name: "Supply Chain", score: 60, color: "fill-yellow" },
+        { name: "Worker Rights", score: 65, color: "fill-yellow" },
+        { name: "Sustainability", score: 68, color: "fill-yellow" },
+        { name: "D&I", score: 80, color: "fill-green" },
+        { name: "Politics", score: 58, color: "fill-yellow" },
+        { name: "Value", score: 74, color: "fill-green" },
+      ],
+      tags: [{ label: "Inclusive policies", type: "pos" }, { label: "Mixed supplier record", type: "neu" }],
+    },
+    {
+      name: "Shein", category: "Fast Fashion / Retail", grade: "D", gradeClass: "grade-d",
+      metrics: [
+        { name: "Supply Chain", score: 12, color: "fill-red" },
+        { name: "Worker Rights", score: 15, color: "fill-red" },
+        { name: "Sustainability", score: 9, color: "fill-red" },
+        { name: "D&I", score: 30, color: "fill-red" },
+        { name: "Politics", score: 20, color: "fill-red" },
+        { name: "Value", score: 80, color: "fill-green" },
+      ],
+      tags: [{ label: "Forced labor risk", type: "neg" }, { label: "Ultra-polluting", type: "neg" }],
+    },
+  ],
+};
+
+const tableData = {
+  coffee: [
+    { rank: 1, name: "Blue Bottle", supply: 84, worker: 78, sustain: 82, di: 75, politics: 79, value: 66, overall: 79, overallClass: "pill-green" },
+    { rank: 2, name: "Peet's Coffee", supply: 74, worker: 70, sustain: 72, di: 68, politics: 65, value: 72, overall: 71, overallClass: "pill-green" },
+    { rank: 3, name: "Dutch Bros", supply: 63, worker: 74, sustain: 55, di: 68, politics: 60, value: 80, overall: 67, overallClass: "pill-yellow" },
+    { rank: 4, name: "Starbucks", supply: 58, worker: 41, sustain: 64, di: 72, politics: 55, value: 48, overall: 55, overallClass: "pill-yellow" },
+    { rank: 5, name: "Dunkin'", supply: 44, worker: 52, sustain: 40, di: 55, politics: 48, value: 78, overall: 51, overallClass: "pill-yellow" },
+    { rank: 6, name: "Tim Hortons", supply: 38, worker: 45, sustain: 42, di: 50, politics: 40, value: 70, overall: 46, overallClass: "pill-orange" },
+  ],
+};
+
+function getPillClass(score) {
+  if (score >= 70) return 'pill-green';
+  if (score >= 55) return 'pill-yellow';
+  if (score >= 40) return 'pill-orange';
+  return 'pill-red';
+}
+
+function renderCompanies(category) {
+  const companies = data[category] || [];
+  const grid = document.getElementById('companies-grid');
+  grid.innerHTML = companies.map(c => `
+    <div class="company-card">
+      <div class="card-header">
+        <div>
+          <div class="company-name">${c.name}</div>
+          <div class="company-category">${c.category}</div>
+        </div>
+        <div class="overall-score">
+          <div class="score-circle ${c.gradeClass}">${c.grade}</div>
+          <div class="score-label">GRADE</div>
+        </div>
+      </div>
+      <div class="metrics">
+        ${c.metrics.map(m => `
+          <div class="metric-row">
+            <div class="metric-name">${m.name}</div>
+            <div class="metric-bar-bg">
+              <div class="metric-bar-fill ${m.color}" style="width: ${m.score}%"></div>
+            </div>
+            <div class="metric-score">${m.score}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="card-footer">
+        <div class="card-tags">
+          ${c.tags.map(t => `<span class="tag tag-${t.type}">${t.label}</span>`).join('')}
+        </div>
+        <button class="compare-btn">+ Compare</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTable(category) {
+  const rows = tableData[category] || tableData.coffee;
+  const tbody = document.getElementById('compare-tbody');
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><span class="rank-num">${r.rank}</span></td>
+      <td class="co-name-cell">${r.name}</td>
+      <td><span class="pill-score ${getPillClass(r.supply)}">${r.supply}</span></td>
+      <td><span class="pill-score ${getPillClass(r.worker)}">${r.worker}</span></td>
+      <td><span class="pill-score ${getPillClass(r.sustain)}">${r.sustain}</span></td>
+      <td><span class="pill-score ${getPillClass(r.di)}">${r.di}</span></td>
+      <td><span class="pill-score ${getPillClass(r.politics)}">${r.politics}</span></td>
+      <td><span class="pill-score ${getPillClass(r.value)}">${r.value}</span></td>
+      <td><span class="pill-score ${r.overallClass}" style="width: 44px; font-size: 13px;">${r.overall}</span></td>
+    </tr>
+  `).join('');
+}
+
+function setTab(el, category) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCompanies(category);
+}
+
+renderCompanies('coffee');
+renderTable('coffee');
+</script>
+
+</body>
+</html>
